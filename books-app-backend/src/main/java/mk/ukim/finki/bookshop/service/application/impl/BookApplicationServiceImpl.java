@@ -2,7 +2,9 @@ package mk.ukim.finki.bookshop.service.application.impl;
 
 
 import mk.ukim.finki.bookshop.dto.CreateBookDto;
+import mk.ukim.finki.bookshop.dto.DisplayAuthorDto;
 import mk.ukim.finki.bookshop.dto.DisplayBookDto;
+import mk.ukim.finki.bookshop.dto.DisplayUserDto;
 import mk.ukim.finki.bookshop.model.domain.Author;
 import mk.ukim.finki.bookshop.model.domain.book.Book;
 import mk.ukim.finki.bookshop.service.application.BookApplicationService;
@@ -11,6 +13,7 @@ import mk.ukim.finki.bookshop.service.domain.BookService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookApplicationServiceImpl implements BookApplicationService {
@@ -55,8 +58,8 @@ public class BookApplicationServiceImpl implements BookApplicationService {
     }
 
     @Override
-    public boolean borrowById(Long id) {
-        return bookService.borrowById(id);
+    public boolean rentById(Long id) {
+        return bookService.rentById(id);
     }
 
     @Override
@@ -75,12 +78,13 @@ public class BookApplicationServiceImpl implements BookApplicationService {
     }
 
     @Override
-    public void borrowAllFromWishlist() {
-        bookService.borrowAllFromWishlist();
+    public void rentAllFromWishlist() {
+        bookService.rentAllFromWishlist();
     }
 
     @Override
     public List<DisplayBookDto> findAllFromWishlist() {
         return DisplayBookDto.from(bookService.findAllFromWishlist());
     }
+
 }

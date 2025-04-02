@@ -1,10 +1,12 @@
 package mk.ukim.finki.bookshop.service.application;
 
 import mk.ukim.finki.bookshop.dto.CreateBookDto;
+import mk.ukim.finki.bookshop.dto.DisplayAuthorDto;
 import mk.ukim.finki.bookshop.dto.DisplayBookDto;
-import mk.ukim.finki.bookshop.model.domain.book.Book;
+import mk.ukim.finki.bookshop.dto.DisplayUserDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookApplicationService {
 
@@ -15,11 +17,12 @@ public interface BookApplicationService {
     DisplayBookDto update(Long id, CreateBookDto createBookDto);
     void deleteById(Long id);
 
-    boolean borrowById(Long id);
+    boolean rentById(Long id);
     boolean returnById(Long id);
 
     void addToWishlist(Long id);
     void removeFromWishlist(Long id);
-    void borrowAllFromWishlist();
+    void rentAllFromWishlist();
     List<DisplayBookDto> findAllFromWishlist();
+
 }

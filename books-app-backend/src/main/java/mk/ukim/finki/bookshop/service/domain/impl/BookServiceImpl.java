@@ -1,18 +1,22 @@
 package mk.ukim.finki.bookshop.service.domain.impl;
 
 import mk.ukim.finki.bookshop.exception.*;
+import mk.ukim.finki.bookshop.model.domain.Author;
 import mk.ukim.finki.bookshop.model.domain.User;
+import mk.ukim.finki.bookshop.model.domain.book.BookRent;
 import mk.ukim.finki.bookshop.model.domain.book.Book;
 import mk.ukim.finki.bookshop.repository.AuthorRepository;
 import mk.ukim.finki.bookshop.repository.BookRepository;
+import mk.ukim.finki.bookshop.repository.BookRentRepository;
 import mk.ukim.finki.bookshop.repository.UserRepository;
-import mk.ukim.finki.bookshop.service.domain.AuthorService;
 import mk.ukim.finki.bookshop.service.domain.BookService;
 import mk.ukim.finki.bookshop.service.domain.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -21,13 +25,15 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final BookRentRepository bookRentRepository;
 
 
-    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, UserService userService, UserRepository userRepository) {
+    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, UserService userService, UserRepository userRepository, BookRentRepository bookRentRepository) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.userService = userService;
         this.userRepository = userRepository;
+        this.bookRentRepository = bookRentRepository;
     }
 
     @Override
@@ -81,12 +87,19 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public boolean borrowById(Long id) {
+    public boolean rentById(Long id) {
         return bookRepository.findById(id)
                 .filter(book -> book.getAvailableCopies() > 0)
                 .map(book -> {
+                    //TODO: check if the book is not rented, otherwise throw exception
+
                     book.setAvailableCopies(book.getAvailableCopies() - 1);
                     bookRepository.save(book);
+
+                    User authUser = userService.getAuthenticatedUser();
+                    BookRent bookRent = new BookRent(authUser, book);
+                    bookRentRepository.save(bookRent);
+
                     return true;
                 })
                 .orElseThrow(() -> new BookOutOfStockException(id));
@@ -96,6 +109,8 @@ public class BookServiceImpl implements BookService {
     public boolean returnById(Long id) {
         return bookRepository.findById(id)
                 .map(book -> {
+                    //TODO: check if the book is rented, otherwise throw exception
+
                     book.setAvailableCopies(book.getAvailableCopies() + 1);
                     bookRepository.save(book);
                     return true;
@@ -125,7 +140,6 @@ public class BookServiceImpl implements BookService {
     @Override
     public void removeFromWishlist(Long id) {
         User authUser = userService.getAuthenticatedUser();
-        Book targetBook = findById(id);
 
         Iterator<Book> iterator = authUser.getWishlist().iterator();
         while (iterator.hasNext()) {
@@ -141,7 +155,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void borrowAllFromWishlist() {
+    public void rentAllFromWishlist() {
         User authUser = userService.getAuthenticatedUser();
 
         if(authUser.getWishlist().isEmpty()) {
@@ -153,7 +167,7 @@ public class BookServiceImpl implements BookService {
         }
 
         for(Book book: authUser.getWishlist()) {
-           borrowById(book.getId());
+           rentById(book.getId());
         }
     }
 
@@ -162,6 +176,7 @@ public class BookServiceImpl implements BookService {
         User authUser = userService.getAuthenticatedUser();
         return authUser.getWishlist();
     }
+
 
     public boolean areBooksAvailable(List<Book> books) {
         for(Book book: books) {

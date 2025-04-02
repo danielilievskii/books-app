@@ -1,7 +1,5 @@
 package mk.ukim.finki.bookshop.handler;
 
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import mk.ukim.finki.bookshop.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
