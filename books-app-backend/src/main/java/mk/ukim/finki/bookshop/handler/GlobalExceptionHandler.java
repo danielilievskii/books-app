@@ -41,6 +41,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
+    @ExceptionHandler(NoBookRentsFoundException.class)
+    public ResponseEntity<String> handleNoBookRentsFoundException(NoBookRentsFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
     @ExceptionHandler(EmptyWishlistException.class)
     public ResponseEntity<String> handleEmptyWishlistException(EmptyWishlistException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -50,5 +55,24 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleBooksOutOfStockException(BooksOutOfStockException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+
+
+    @ExceptionHandler(NoMostRentedBookFoundException.class)
+    public ResponseEntity<String> handleNoBookWithMostBorrowsFoundException(NoMostRentedBookFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(NoUserWithMostRentedBooksFoundException.class)
+    public ResponseEntity<String> handleNoUserWithMostBorrowedBooksFoundException(NoUserWithMostRentedBooksFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+    @ExceptionHandler(NoMostRentedBookAuthorFoundException.class)
+    public ResponseEntity<String> NoAuthorWithMostBorrowedBooksFoundException(NoMostRentedBookAuthorFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+
+
+
 }
 

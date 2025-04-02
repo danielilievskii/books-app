@@ -71,7 +71,7 @@ public class DataHolder {
         users = new ArrayList<>();
         if(this.userRepository.count() == 0) {
             users.add(new User("di", passwordEncoder.encode("12345"), "Daniel", Role.ROLE_LIBRARIAN));
-            users.add(new User("user",  passwordEncoder.encode("12345"), "User", Role.ROLE_USER));
+            users.add(new User("user",  passwordEncoder.encode("12345"), "User", Role.ROLE_LIBRARIAN));
             userRepository.saveAll(users);
         }
     }

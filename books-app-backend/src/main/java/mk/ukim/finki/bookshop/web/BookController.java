@@ -3,10 +3,8 @@ package mk.ukim.finki.bookshop.web;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import mk.ukim.finki.bookshop.dto.CreateBookDto;
-import mk.ukim.finki.bookshop.dto.DisplayBookDto;
-import mk.ukim.finki.bookshop.exception.*;
 import mk.ukim.finki.bookshop.service.application.BookApplicationService;
-import mk.ukim.finki.bookshop.service.domain.BookService;
+import mk.ukim.finki.bookshop.service.application.BookRentApplicationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class BookController {
 
     private final BookApplicationService bookApplicationService;
+    private final BookRentApplicationService bookRentApplicationService;
 
-    public BookController(BookApplicationService bookApplicationService) {
+    public BookController(BookApplicationService bookApplicationService, BookRentApplicationService bookRentApplicationService) {
         this.bookApplicationService = bookApplicationService;
+        this.bookRentApplicationService = bookRentApplicationService;
     }
 
     @GetMapping
@@ -56,7 +56,7 @@ public class BookController {
     @GetMapping("/borrow/{id}")
     @Operation(summary = "Borrow a book", description = "Decreases available copies count by 1")
     public ResponseEntity<?> borrowBook(@PathVariable Long id) {
-        bookApplicationService.borrowById(id);
+        bookApplicationService.rentById(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -65,6 +65,30 @@ public class BookController {
     public ResponseEntity<?> returnBook(@PathVariable Long id) {
         bookApplicationService.returnById(id);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/rents")
+    @Operation(summary = "Return borrowed books for current user", description = "")
+    public ResponseEntity<?> findAllRentedBooksForCurrentUser() {
+        return ResponseEntity.ok(bookRentApplicationService.findAllRentedBooksForCurrentUser());
+    }
+
+    @GetMapping("/rents/bybook")
+    @Operation(summary = "Returns most borrowedBook", description = "")
+    public ResponseEntity<?> findMostRentedBook() {
+        return ResponseEntity.ok(bookRentApplicationService.findMostRentedBook());
+    }
+
+    @GetMapping("/rents/byuser")
+    @Operation(summary = "Returns user with most borrowed books", description = "")
+    public ResponseEntity<?> findUserWithMostBorrowedBooks() {
+        return ResponseEntity.ok(bookRentApplicationService.findUserWithMostRentedBooks());
+    }
+
+    @GetMapping("/rents/byauthorr")
+    @Operation(summary = "Returns author with most borrowed books", description = "")
+    public ResponseEntity<?> findMostRentedBookAuthor() {
+        return ResponseEntity.ok(bookRentApplicationService.findMostRentedBookAuthor());
     }
 
     @GetMapping("/wishlist/add/{id}")
@@ -84,7 +108,7 @@ public class BookController {
     @GetMapping("/wishlist/borrow")
     @Operation(summary = "Borrow all books from wishlist", description = "")
     public ResponseEntity<?> borrowAllFromWishlist() {
-        bookApplicationService.borrowAllFromWishlist();
+        bookApplicationService.rentAllFromWishlist();
         return ResponseEntity.ok().build();
     }
 
