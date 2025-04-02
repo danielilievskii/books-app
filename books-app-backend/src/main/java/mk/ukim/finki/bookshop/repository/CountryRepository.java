@@ -1,6 +1,6 @@
 package mk.ukim.finki.bookshop.repository;
 
-import mk.ukim.finki.bookshop.model.Country;
+import mk.ukim.finki.bookshop.model.domain.Country;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
