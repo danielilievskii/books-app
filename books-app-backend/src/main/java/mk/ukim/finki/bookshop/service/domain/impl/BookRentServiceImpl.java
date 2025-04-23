@@ -1,9 +1,9 @@
 package mk.ukim.finki.bookshop.service.domain.impl;
 
-import mk.ukim.finki.bookshop.exception.NoMostRentedBookAuthorFoundException;
-import mk.ukim.finki.bookshop.exception.NoBookRentsFoundException;
-import mk.ukim.finki.bookshop.exception.NoMostRentedBookFoundException;
-import mk.ukim.finki.bookshop.exception.NoUserWithMostRentedBooksFoundException;
+import mk.ukim.finki.bookshop.model.exception.NoMostRentedBookAuthorFoundException;
+import mk.ukim.finki.bookshop.model.exception.NoBookRentsFoundException;
+import mk.ukim.finki.bookshop.model.exception.NoMostRentedBookFoundException;
+import mk.ukim.finki.bookshop.model.exception.NoUserWithMostRentedBooksFoundException;
 import mk.ukim.finki.bookshop.model.domain.Author;
 import mk.ukim.finki.bookshop.model.domain.User;
 import mk.ukim.finki.bookshop.model.domain.book.Book;

@@ -3,11 +3,7 @@ package mk.ukim.finki.bookshop.web;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import mk.ukim.finki.bookshop.dto.CreateAuthorDto;
-import mk.ukim.finki.bookshop.dto.CreateCountryDto;
-import mk.ukim.finki.bookshop.exception.AuthorNotFoundException;
-import mk.ukim.finki.bookshop.exception.CountryNotFoundException;
 import mk.ukim.finki.bookshop.service.application.AuthorApplicationService;
-import mk.ukim.finki.bookshop.service.application.CountryApplicationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +23,12 @@ public class AuthorController {
     @Operation(summary = "List all authors")
     public ResponseEntity<?> listAllAuthors() {
         return ResponseEntity.status(HttpStatus.OK).body(authorApplicationService.findAll());
+    }
+
+    @GetMapping("/names")
+    @Operation(summary = "List all authors' names")
+    public ResponseEntity<?> listAllAuthorsNames() {
+        return ResponseEntity.status(HttpStatus.OK).body(authorApplicationService.findAllAuthorsNames());
     }
 
     @GetMapping("/{id}")
@@ -52,5 +54,10 @@ public class AuthorController {
     public ResponseEntity<?> deleteBook(@PathVariable Long id) {
         authorApplicationService.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/by-country")
+    public ResponseEntity<?> getAuthorsPerCountry() {
+        return ResponseEntity.ok(authorApplicationService.getAuthorsPerCountry());
     }
 }

@@ -1,6 +1,6 @@
 package mk.ukim.finki.bookshop.service.domain.impl;
 
-import mk.ukim.finki.bookshop.exception.CountryNotFoundException;
+import mk.ukim.finki.bookshop.model.exception.CountryNotFoundException;
 import mk.ukim.finki.bookshop.model.domain.Author;
 import mk.ukim.finki.bookshop.model.domain.Country;
 import mk.ukim.finki.bookshop.repository.AuthorRepository;

@@ -1,7 +1,7 @@
-package mk.ukim.finki.bookshop.handler;
+package mk.ukim.finki.bookshop.model.exception.handler;
 
 
-import mk.ukim.finki.bookshop.exception.*;
+import mk.ukim.finki.bookshop.model.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

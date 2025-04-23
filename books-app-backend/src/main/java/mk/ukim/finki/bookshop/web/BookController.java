@@ -73,19 +73,19 @@ public class BookController {
         return ResponseEntity.ok(bookRentApplicationService.findAllRentedBooksForCurrentUser());
     }
 
-    @GetMapping("/rents/bybook")
+    @GetMapping("/rents/by-book")
     @Operation(summary = "Returns most borrowedBook", description = "")
     public ResponseEntity<?> findMostRentedBook() {
         return ResponseEntity.ok(bookRentApplicationService.findMostRentedBook());
     }
 
-    @GetMapping("/rents/byuser")
+    @GetMapping("/rents/by-user")
     @Operation(summary = "Returns user with most borrowed books", description = "")
     public ResponseEntity<?> findUserWithMostBorrowedBooks() {
         return ResponseEntity.ok(bookRentApplicationService.findUserWithMostRentedBooks());
     }
 
-    @GetMapping("/rents/byauthorr")
+    @GetMapping("/rents/by-author")
     @Operation(summary = "Returns author with most borrowed books", description = "")
     public ResponseEntity<?> findMostRentedBookAuthor() {
         return ResponseEntity.ok(bookRentApplicationService.findMostRentedBookAuthor());
@@ -116,5 +116,10 @@ public class BookController {
     @Operation(summary = "Fetch book wishlist", description = "Returns user's wishlist")
     public ResponseEntity<?> findAllFromWishlist() {
         return ResponseEntity.ok(bookApplicationService.findAllFromWishlist());
+    }
+
+    @GetMapping("/by-author")
+    public ResponseEntity<?> getBooksPerAuthorView() {
+        return ResponseEntity.ok(bookApplicationService.getBooksPerAuthorView());
     }
 }

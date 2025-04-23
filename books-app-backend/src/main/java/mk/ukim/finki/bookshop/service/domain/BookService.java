@@ -1,7 +1,6 @@
 package mk.ukim.finki.bookshop.service.domain;
-import mk.ukim.finki.bookshop.model.domain.Author;
-import mk.ukim.finki.bookshop.model.domain.User;
 import mk.ukim.finki.bookshop.model.domain.book.Book;
+import mk.ukim.finki.bookshop.model.views.BooksPerAuthorView;
 
 import java.util.List;
 
@@ -21,5 +20,8 @@ public interface BookService {
     void removeFromWishlist(Long id);
     void rentAllFromWishlist();
     List<Book> findAllFromWishlist();
+
+    List<BooksPerAuthorView> getBooksPerAuthorView();
+    void refreshBooksByAuthorView();
 
 }

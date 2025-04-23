@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,6 +54,11 @@ public class UserApplicationServiceImpl implements UserApplicationService {
     @Override
     public Optional<DisplayUserDto> findByUsername(String username) {
         return Optional.of(DisplayUserDto.from(userService.findByUsername(username)));
+    }
+
+    @Override
+    public List<User> fetchAll() {
+        return userService.fetchAll();
     }
 
 }

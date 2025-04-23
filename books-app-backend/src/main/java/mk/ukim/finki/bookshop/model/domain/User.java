@@ -30,6 +30,11 @@ public class User implements UserDetails {
     private String name;
 
     @ManyToMany
+    @JoinTable(
+            name = "wishlist",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
     private List<Book> wishlist;
 
 

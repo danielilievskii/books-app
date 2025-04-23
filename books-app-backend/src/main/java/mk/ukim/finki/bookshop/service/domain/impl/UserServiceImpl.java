@@ -1,9 +1,12 @@
 package mk.ukim.finki.bookshop.service.domain.impl;
 
 import jakarta.servlet.http.HttpServletRequest;
-import mk.ukim.finki.bookshop.exception.*;
 import mk.ukim.finki.bookshop.model.domain.User;
 import mk.ukim.finki.bookshop.model.enumeration.Role;
+import mk.ukim.finki.bookshop.model.exception.AuthenticationException;
+import mk.ukim.finki.bookshop.model.exception.InvalidArgumentsException;
+import mk.ukim.finki.bookshop.model.exception.PasswordsDoNotMatchException;
+import mk.ukim.finki.bookshop.model.exception.UsernameAlreadyExistsException;
 import mk.ukim.finki.bookshop.repository.UserRepository;
 import mk.ukim.finki.bookshop.service.domain.UserService;
 import org.springframework.context.annotation.Lazy;
@@ -16,6 +19,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -55,6 +60,11 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Override
+    public List<User> fetchAll() {
+        return userRepository.fetchAll();
     }
 
     @Override

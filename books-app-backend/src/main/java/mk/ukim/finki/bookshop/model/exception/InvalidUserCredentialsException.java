@@ -1,4 +1,4 @@
-package mk.ukim.finki.bookshop.exception;
+package mk.ukim.finki.bookshop.model.exception;
 
 public class InvalidUserCredentialsException extends RuntimeException {
 

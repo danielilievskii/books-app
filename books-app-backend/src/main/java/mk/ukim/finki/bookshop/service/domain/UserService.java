@@ -5,6 +5,8 @@ import mk.ukim.finki.bookshop.model.domain.User;
 import mk.ukim.finki.bookshop.model.enumeration.Role;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.List;
+
 public interface UserService extends UserDetailsService {
 
     User register(String username, String password, String repeatPassword, String name, Role role);
@@ -16,4 +18,6 @@ public interface UserService extends UserDetailsService {
     User findByUsername(String username);
 
     User getAuthenticatedUser();
+
+    List<User> fetchAll();
 }

@@ -4,6 +4,8 @@ import mk.ukim.finki.bookshop.dto.CreateAuthorDto;
 import mk.ukim.finki.bookshop.dto.DisplayAuthorDto;
 import mk.ukim.finki.bookshop.model.domain.Author;
 import mk.ukim.finki.bookshop.model.domain.Country;
+import mk.ukim.finki.bookshop.model.projections.AuthorProjection;
+import mk.ukim.finki.bookshop.model.views.AuthorsPerCountryView;
 import mk.ukim.finki.bookshop.service.application.AuthorApplicationService;
 import mk.ukim.finki.bookshop.service.domain.AuthorService;
 import mk.ukim.finki.bookshop.service.domain.CountryService;
@@ -25,6 +27,11 @@ public class AuthorApplicationServiceImpl implements AuthorApplicationService {
     @Override
     public List<DisplayAuthorDto> findAll() {
         return DisplayAuthorDto.from(authorService.findAll());
+    }
+
+    @Override
+    public List<AuthorProjection> findAllAuthorsNames() {
+        return authorService.findAllAuthorsNames();
     }
 
     @Override
@@ -51,5 +58,10 @@ public class AuthorApplicationServiceImpl implements AuthorApplicationService {
     @Override
     public void deleteById(Long id) {
         authorService.deleteById(id);
+    }
+
+    @Override
+    public List<AuthorsPerCountryView> getAuthorsPerCountry() {
+        return authorService.getAuthorsPerCountry();
     }
 }

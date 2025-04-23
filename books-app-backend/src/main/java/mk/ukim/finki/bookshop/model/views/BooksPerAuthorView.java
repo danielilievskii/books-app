@@ -1,0 +1,25 @@
+package mk.ukim.finki.bookshop.model.views;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
+import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.Subselect;
+import org.hibernate.annotations.Synchronize;
+
+@Data
+@Entity
+@Subselect("SELECT * FROM public.books_per_author")
+@Immutable
+public class BooksPerAuthorView {
+
+    @Id
+    @Column(name = "author_id")
+    private Long authorId;
+
+    @Column(name = "num_books")
+    private Integer numBooks;
+
+}

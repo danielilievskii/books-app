@@ -4,6 +4,7 @@ import mk.ukim.finki.bookshop.dto.CreateBookDto;
 import mk.ukim.finki.bookshop.dto.DisplayAuthorDto;
 import mk.ukim.finki.bookshop.dto.DisplayBookDto;
 import mk.ukim.finki.bookshop.dto.DisplayUserDto;
+import mk.ukim.finki.bookshop.model.views.BooksPerAuthorView;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,5 +25,7 @@ public interface BookApplicationService {
     void removeFromWishlist(Long id);
     void rentAllFromWishlist();
     List<DisplayBookDto> findAllFromWishlist();
+
+    List<BooksPerAuthorView> getBooksPerAuthorView();
 
 }

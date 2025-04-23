@@ -1,22 +1,17 @@
 package mk.ukim.finki.bookshop.service.domain.impl;
 
-import mk.ukim.finki.bookshop.exception.*;
-import mk.ukim.finki.bookshop.model.domain.Author;
 import mk.ukim.finki.bookshop.model.domain.User;
 import mk.ukim.finki.bookshop.model.domain.book.BookRent;
 import mk.ukim.finki.bookshop.model.domain.book.Book;
-import mk.ukim.finki.bookshop.repository.AuthorRepository;
-import mk.ukim.finki.bookshop.repository.BookRepository;
-import mk.ukim.finki.bookshop.repository.BookRentRepository;
-import mk.ukim.finki.bookshop.repository.UserRepository;
+import mk.ukim.finki.bookshop.model.exception.*;
+import mk.ukim.finki.bookshop.model.views.BooksPerAuthorView;
+import mk.ukim.finki.bookshop.repository.*;
 import mk.ukim.finki.bookshop.service.domain.BookService;
 import mk.ukim.finki.bookshop.service.domain.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -26,14 +21,15 @@ public class BookServiceImpl implements BookService {
     private final UserService userService;
     private final UserRepository userRepository;
     private final BookRentRepository bookRentRepository;
+    private final BooksPerAuthorViewRepository booksPerAuthorViewRepository;
 
-
-    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, UserService userService, UserRepository userRepository, BookRentRepository bookRentRepository) {
+    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, UserService userService, UserRepository userRepository, BookRentRepository bookRentRepository, BooksPerAuthorViewRepository booksPerAuthorViewRepository) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.userService = userService;
         this.userRepository = userRepository;
         this.bookRentRepository = bookRentRepository;
+        this.booksPerAuthorViewRepository = booksPerAuthorViewRepository;
     }
 
     @Override
@@ -175,6 +171,16 @@ public class BookServiceImpl implements BookService {
     public List<Book> findAllFromWishlist() {
         User authUser = userService.getAuthenticatedUser();
         return authUser.getWishlist();
+    }
+
+    @Override
+    public List<BooksPerAuthorView> getBooksPerAuthorView() {
+        return booksPerAuthorViewRepository.findAll();
+    }
+
+    @Override
+    public void refreshBooksByAuthorView() {
+        this.booksPerAuthorViewRepository.refreshMaterializedView();
     }
 
 

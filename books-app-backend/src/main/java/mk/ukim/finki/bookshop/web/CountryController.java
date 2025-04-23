@@ -2,15 +2,8 @@ package mk.ukim.finki.bookshop.web;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import mk.ukim.finki.bookshop.dto.CreateBookDto;
 import mk.ukim.finki.bookshop.dto.CreateCountryDto;
-import mk.ukim.finki.bookshop.exception.AuthorNotFoundException;
-import mk.ukim.finki.bookshop.exception.BookNotFoundException;
-import mk.ukim.finki.bookshop.exception.BookOutOfStockException;
-import mk.ukim.finki.bookshop.exception.CountryNotFoundException;
-import mk.ukim.finki.bookshop.service.application.BookApplicationService;
 import mk.ukim.finki.bookshop.service.application.CountryApplicationService;
-import mk.ukim.finki.bookshop.service.domain.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

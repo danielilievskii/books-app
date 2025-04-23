@@ -7,6 +7,7 @@ import mk.ukim.finki.bookshop.dto.DisplayBookDto;
 import mk.ukim.finki.bookshop.dto.DisplayUserDto;
 import mk.ukim.finki.bookshop.model.domain.Author;
 import mk.ukim.finki.bookshop.model.domain.book.Book;
+import mk.ukim.finki.bookshop.model.views.BooksPerAuthorView;
 import mk.ukim.finki.bookshop.service.application.BookApplicationService;
 import mk.ukim.finki.bookshop.service.domain.AuthorService;
 import mk.ukim.finki.bookshop.service.domain.BookService;
@@ -85,6 +86,11 @@ public class BookApplicationServiceImpl implements BookApplicationService {
     @Override
     public List<DisplayBookDto> findAllFromWishlist() {
         return DisplayBookDto.from(bookService.findAllFromWishlist());
+    }
+
+    @Override
+    public List<BooksPerAuthorView> getBooksPerAuthorView() {
+        return bookService.getBooksPerAuthorView();
     }
 
 }
