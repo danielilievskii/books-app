@@ -1,9 +1,10 @@
-package mk.ukim.finki.bookshop.web;
+package mk.ukim.finki.bookshop.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import mk.ukim.finki.bookshop.dto.DisplayUserDto;
+import mk.ukim.finki.bookshop.dto.LoginResponseDto;
 import mk.ukim.finki.bookshop.service.application.UserApplicationService;
 import mk.ukim.finki.bookshop.dto.CreateUserDto;
 import mk.ukim.finki.bookshop.dto.LoginUserDto;
@@ -37,7 +38,7 @@ public class UserController {
 
     @Operation(summary = "User login", description = "Authenticates a user and starts a session")
     @PostMapping("/login")
-    public ResponseEntity<DisplayUserDto> login(@RequestBody LoginUserDto loginUserDto, HttpServletRequest request) {
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginUserDto loginUserDto, HttpServletRequest request) {
         return ResponseEntity.ok(userApplicationService.login(loginUserDto, request).get());
     }
 

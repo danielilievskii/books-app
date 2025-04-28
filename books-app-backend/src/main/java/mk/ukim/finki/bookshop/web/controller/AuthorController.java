@@ -1,6 +1,7 @@
-package mk.ukim.finki.bookshop.web;
+package mk.ukim.finki.bookshop.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import mk.ukim.finki.bookshop.dto.CreateAuthorDto;
 import mk.ukim.finki.bookshop.service.application.AuthorApplicationService;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/api/authors")
 @Tag(name = "Authors", description = "Author management API for librarians")

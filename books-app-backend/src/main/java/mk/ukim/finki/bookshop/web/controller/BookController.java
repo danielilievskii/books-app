@@ -1,4 +1,4 @@
-package mk.ukim.finki.bookshop.web;
+package mk.ukim.finki.bookshop.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

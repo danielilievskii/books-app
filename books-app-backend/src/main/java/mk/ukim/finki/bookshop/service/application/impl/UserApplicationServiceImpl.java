@@ -3,8 +3,10 @@ package mk.ukim.finki.bookshop.service.application.impl;
 import jakarta.servlet.http.HttpServletRequest;
 import mk.ukim.finki.bookshop.dto.CreateUserDto;
 import mk.ukim.finki.bookshop.dto.DisplayUserDto;
+import mk.ukim.finki.bookshop.dto.LoginResponseDto;
 import mk.ukim.finki.bookshop.dto.LoginUserDto;
 import mk.ukim.finki.bookshop.model.domain.User;
+import mk.ukim.finki.bookshop.security.JwtService;
 import mk.ukim.finki.bookshop.service.application.UserApplicationService;
 import mk.ukim.finki.bookshop.service.domain.UserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,9 +22,11 @@ import java.util.Optional;
 public class UserApplicationServiceImpl implements UserApplicationService {
 
     private final UserService userService;
+    private final JwtService jwtService;
 
-    public UserApplicationServiceImpl(UserService userService) {
+    public UserApplicationServiceImpl(UserService userService, JwtService jwtService) {
         this.userService = userService;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -38,12 +42,15 @@ public class UserApplicationServiceImpl implements UserApplicationService {
     }
 
     @Override
-    public Optional<DisplayUserDto> login(LoginUserDto loginUserDto, HttpServletRequest request) {
-        return Optional.of(DisplayUserDto.from(userService.login(
+    public Optional<LoginResponseDto> login(LoginUserDto loginUserDto, HttpServletRequest request) {
+        User user = userService.login(
                 loginUserDto.username(),
                 loginUserDto.password(),
                 request
-        )));
+        );
+
+        String token = jwtService.generateToken(user);
+        return Optional.of(new LoginResponseDto(token));
     }
 
     @Override
