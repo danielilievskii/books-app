@@ -64,7 +64,12 @@ public class UserApplicationServiceImpl implements UserApplicationService {
     }
 
     @Override
-    public List<User> fetchAll() {
+    public DisplayUserDto findAuthenticatedUser() {
+        return DisplayUserDto.from(userService.getAuthenticatedUser());
+    }
+
+    @Override
+    public List<User> findAll() {
         return userService.fetchAll();
     }
 

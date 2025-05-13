@@ -15,9 +15,9 @@ public interface UserApplicationService {
     Optional<DisplayUserDto> register(CreateUserDto createUserDto);
 
     Optional<LoginResponseDto> login(LoginUserDto loginUserDto, HttpServletRequest request);
-
     void logout();
-    Optional<DisplayUserDto> findByUsername(String username);
 
-    List<User> fetchAll();
+    Optional<DisplayUserDto> findByUsername(String username);
+    DisplayUserDto findAuthenticatedUser();
+    List<User> findAll();
 }

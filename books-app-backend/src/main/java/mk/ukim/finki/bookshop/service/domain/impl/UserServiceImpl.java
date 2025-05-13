@@ -10,6 +10,7 @@ import mk.ukim.finki.bookshop.model.exception.UsernameAlreadyExistsException;
 import mk.ukim.finki.bookshop.repository.UserRepository;
 import mk.ukim.finki.bookshop.service.domain.UserService;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication == null || !authentication.isAuthenticated()) {
+        if (!authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken)  {
             throw new AuthenticationException();
         }
 

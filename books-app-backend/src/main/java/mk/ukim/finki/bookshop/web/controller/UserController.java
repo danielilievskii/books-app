@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @Operation(summary = "Register a new user", description = "Creates a new user account")
-    @PostMapping("/register")
+    @PostMapping("/signup")
     public ResponseEntity<DisplayUserDto> register(@RequestBody CreateUserDto createUserDto) {
         try {
             return userApplicationService.register(createUserDto)
@@ -37,23 +37,29 @@ public class UserController {
     }
 
     @Operation(summary = "User login", description = "Authenticates a user and starts a session")
-    @PostMapping("/login")
+    @PostMapping("/signin")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginUserDto loginUserDto, HttpServletRequest request) {
         return ResponseEntity.ok(userApplicationService.login(loginUserDto, request).get());
     }
 
     @Operation(summary = "User logout", description = "Ends the user's session")
-    @GetMapping("/logout")
+    @GetMapping("/signout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
         userApplicationService.logout();
         return ResponseEntity.ok().build();
 
     }
 
+    @Operation(summary = "Returns current authenticated user")
+    @GetMapping("/me")
+    public ResponseEntity<DisplayUserDto> fetchAuthenticatedUser() {
+        return ResponseEntity.ok(userApplicationService.findAuthenticatedUser());
+    }
+
     @Operation(summary = "Fetches all users")
     @GetMapping("/users")
-    public ResponseEntity<?> fetchAll(HttpServletRequest request) {
-        return ResponseEntity.ok(userApplicationService.fetchAll());
+    public ResponseEntity<?> findAll(HttpServletRequest request) {
+        return ResponseEntity.ok(userApplicationService.findAll());
 
     }
 }
