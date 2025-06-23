@@ -14,6 +14,9 @@ export const authorRepository = {
         return await axiosInstance.put(`/authors/edit/${id}`, data)
     },
     delete: async (id) => {
-        return await axiosInstance.delete(`/authors/delete${id}`)
+        return await axiosInstance.delete(`/authors/delete/${id}`)
+    },
+    getAuthorsPerCountry: async () => {
+        return await axiosInstance.get("/authors/by-country")
     }
 }

@@ -8,6 +8,7 @@ import {UserContext} from "../../../context/UserContext.jsx";
 import {AddCountryDialog} from "../../components/countries/CountryDialog/AddCountryDialog.jsx";
 import {AddAuthorDialog} from "../../components/authors/AuthorDialog/AddAuthorDialog.jsx";
 import {useCountries} from "../../../hooks/useCountries.js";
+import {AuthorStats} from "../../components/authors/AuthorStats/AuthorStats.jsx";
 
 export const AuthorsPage = () => {
     const {user} = useContext(UserContext);
@@ -48,6 +49,8 @@ export const AuthorsPage = () => {
                             onClose={() => {setAuthorDialog(false)}}
                             onAdd={onAdd}
                         />
+
+                        <AuthorStats countries={countries} />
                     </>
                 )}
             </div>

@@ -28,7 +28,7 @@ public class AuthorController {
     }
 
     @GetMapping("/names")
-    @Operation(summary = "List all authors' names")
+    @Operation(summary = "List all author names")
     public ResponseEntity<?> listAllAuthorsNames() {
         return ResponseEntity.status(HttpStatus.OK).body(authorApplicationService.findAllAuthorsNames());
     }
