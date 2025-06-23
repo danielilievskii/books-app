@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  database:
+    image: postgres:17.4
+    container_name: database
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: books-db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./books-app-backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./books-app-backend/views.sql:/docker-entrypoint-initdb.d/views.sql
+  backend:
+    build:
+      context: ./books-app-backend
+      dockerfile: Dockerfile
+    container_name: backend
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=database
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    links:
+      - database
+  frontend:
+    build:
+      context: ./books-app-frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_BACKEND_HOST=localhost
+        - VITE_BACKEND_PORT=8080
+        - VITE_BACKEND_BASE_PATH=/api
+    container_name: frontend
+    restart: always
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
