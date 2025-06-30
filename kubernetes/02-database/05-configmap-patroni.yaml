@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: patroni-config
+  namespace: app-deployment
+data:
+  patroni.yml: |
+    scope: postgres
+    namespace: app-deployment
+    name: {{POD_NAME}}
+
+    restapi:
+      listen: 0.0.0.0:8008
+      connect_address: {{POD_IP}}:8008
+
+    kubernetes:
+      namespace: app-deployment
+      use_endpoints: false
+      labels:
+        app: patroni
+        cluster-name: app-deployment
+
+    bootstrap:
+      dcs:
+        ttl: 30
+        loop_wait: 10
+        retry_timeout: 10
+        maximum_lag_on_failover: 1048576
+        postgresql:
+          use_pg_rewind: true
+          parameters:
+            wal_level: replica
+            hot_standby: "on"
+            max_wal_senders: 5
+            max_replication_slots: 5
+            wal_keep_size: 512
+
+      initdb:
+      - encoding: UTF8
+      - locale: en_US.UTF-8
+      - data-checksums
+
+      users:
+        admin:
+          password: adminpass
+          options:
+            - createrole
+            - createdb
+
+    postgresql:
+      listen: 0.0.0.0:5432
+      connect_address: {{POD_IP}}:5432
+      data_dir: /home/postgres/pgdata/data
+      pgpass: /home/postgres/pgdata/.pgpass
+      pg_hba:
+        - local all all trust
+        - host all all 0.0.0.0/0 md5
+        - host replication replicator 0.0.0.0/0 md5
+      authentication:
+        superuser:
+          username: postgres
+          password: postgrespass
+        replication:
+          username: replicator
+          password: replicatorpass
+      parameters:
+        unix_socket_directories: '/var/run/postgresql'

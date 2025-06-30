@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: patroni
+  namespace: app-deployment
+spec:
+  serviceName: patroni
+  replicas: 1
+  selector:
+    matchLabels:
+      app: patroni
+  template:
+    metadata:
+      labels:
+        app: patroni
+    spec:
+      serviceAccountName: patroni
+      automountServiceAccountToken: true
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: "Always"
+
+      containers:
+      - name: patroni
+        image: ongres/patroni:latest
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: PATRONI_SUPERUSER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_PASSWORD
+        - name: PATRONI_REPLICATION_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: REPLICATION_PASSWORD
+        ports:
+        - name: restapi
+          containerPort: 8008
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config
+        - name: data
+          mountPath: /home/postgres/pgdata
+        - name: run-postgresql
+          mountPath: /var/run/postgresql
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            sed "s/{{POD_NAME}}/${POD_NAME}/g; s/{{POD_IP}}/${POD_IP}/g" /config/patroni.yml > /tmp/patroni.yml && patroni /tmp/patroni.yml
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: restapi
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: restapi
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+      volumes:
+      - name: config-volume
+        configMap:
+          name: patroni-config
+      - name: run-postgresql
+        emptyDir: {}
+
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgpool
+  namespace: app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pgpool
+  template:
+    metadata:
+      labels:
+        app: pgpool
+    spec:
+      containers:
+      - name: pgpool
+        image: bitnami/pgpool:latest
+        env:
+        - name: PGPOOL_BACKEND_NODES
+          value: "0:patroni-0.patroni.app-deployment.svc.cluster.local:5432"
+        - name: PGPOOL_SR_CHECK_USER
+          value: "postgres"
+        - name: PGPOOL_SR_CHECK_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_PASSWORD
+        - name: PGPOOL_ENABLE_LOAD_BALANCING
+          value: "yes"
+        - name: PGPOOL_POSTGRES_USERNAME
+          value: "postgres"
+        - name: PGPOOL_POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_PASSWORD
+        - name: PGPOOL_ADMIN_USERNAME
+          value: "admin"
+        - name: PGPOOL_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_PASSWORD
+        ports:
+        - containerPort: 5432

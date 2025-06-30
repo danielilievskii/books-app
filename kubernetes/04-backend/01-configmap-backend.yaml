@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: app-deployment
+data:
+  DB_HOST: pgpool-service.app-deployment.svc.cluster.local
+  DB_USER: postgres
